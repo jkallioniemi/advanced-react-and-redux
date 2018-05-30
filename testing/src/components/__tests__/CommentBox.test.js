@@ -17,12 +17,22 @@ it("has a text area and a button", () => {
     expect(wrapped.find("button").length).toEqual(1);
 });
 
-it("has a text area that users can type in", () => {
+describe("text area tests", () => {
     const input = "Goats are the best!";
-    wrapped.find("textarea").simulate("change", {
-        target: { value: "Goats are the best!" }
-    });
-    wrapped.update();
 
-    expect(wrapped.find("textarea").prop('value')).toEqual(input);
+    beforeEach(() => {
+        wrapped.find("textarea").simulate("change", {
+            target: {value: input}
+        });
+    });
+
+    it("has a text area that users can type in", () => {
+        expect(wrapped.find("textarea").prop("value")).toEqual(input);
+    });
+
+    it("has a text area whose text is cleared when the user presses submit", () => {
+        expect(wrapped.find("textarea").prop("value")).toEqual(input);
+        wrapped.find("form").simulate("submit");
+        expect(wrapped.find("textarea").prop("value")).toEqual("");
+    });
 });
